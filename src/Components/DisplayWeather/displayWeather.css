@@ -71,14 +71,15 @@
   color: white;
 }
 
-.forecast {
+.weather-details {
   width: 95%;
-  background-color: rgba(255, 255, 255, 0.25);
   margin: 10px auto;
   border-radius: 10px;
   padding: 10px;
   display: flex;
   flex-direction: column;
+  background-color: rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
 }
 .firstrow {
   margin: 20px;
@@ -92,7 +93,7 @@
   flex-direction: row;
 }
 
-.forecast .details {
+.weather-details .details {
   width: 33%;
   text-align: center;
   font-size: 15px;
@@ -102,5 +103,53 @@
 @media (max-width: 999px) {
   .display {
     flex-direction: column;
+  }
+}
+
+.forecast-box {
+  width: 100%;
+  display: flex;
+  margin-top: 20px;
+  flex-direction: row;
+  overflow-x: scroll;
+  bottom: 10px;
+}
+.forecast-box::-webkit-scrollbar {
+  width: 10px;
+}
+/* Handle */
+.forecast-box::-webkit-scrollbar-thumb {
+  border-radius: 40px;
+  background: rgba(124, 123, 123, 0.7);
+  width: 10px;
+}
+
+/* Handle on hover */
+.forecast-box::-webkit-scrollbar-thumb:hover {
+  background: rgba(180, 179, 179, 0.7);
+}
+
+h2 {
+  margin: 10px;
+  color: white;
+  font-size: 35px;
+  text-shadow: 3px 3px rgba(50, 50, 70, 0.2);
+}
+
+@media (min-width: 999px) {
+  .forecast-box {
+    margin-top: 50px;
+    position: absolute;
+    bottom: 10px;
+    width: 97%;
+  }
+
+  h2 {
+    position: absolute;
+    bottom: 220px;
+    margin-left: 10px;
+    color: white;
+    font-size: 35px;
+    text-shadow: 3px 3px rgba(50, 50, 70, 0.2);
   }
 }

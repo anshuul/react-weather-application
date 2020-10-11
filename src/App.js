@@ -12,31 +12,42 @@ class App extends Component {
   state = {
     weather: "",
     inputAdded: "",
+    forecast: "",
+    tempData: "",
   };
 
-  /*   componentDidMount() {
+  componentDidMount() {
     navigator.geolocation.getCurrentPosition((position) => {
       Axios.get(
-        `${api.base}onecall?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=metric&APPID=${api.key}`
-      )
-        .then((response) => {
-          console.log(response);
-          this.displayWeatherInfo(response);
-        })
-        .catch((error) => console.log(error));
+        `https://us1.locationiq.com/v1/reverse.php?key=pk.fad98be50067c0d5c523819363c47ad8&lat=${position.coords.latitude}&lon=${position.coords.longitude}&format=json`
+      ).then((response) => {
+        this.saveData(response);
+      });
     });
   }
 
-  displayWeatherInfo = (response) => (
-    <DisplayWeather
-      name={response.data.name}
-      country={response.data.sys.country}
-      temp={response.data.main.temp}
-      icon={response.data.weather[0].icon}
-      description={response.data.weather[0].description}
-      data={response.data.weather[0].main}
-    />
-  ); */
+  saveData = (result) => {
+    this.setState({
+      tempData: result,
+    });
+    this.getWeatherFromApi(result.data.address.city);
+  };
+
+  getWeatherFromApi = (location) => {
+    Axios.get(`${api.base}weather?q=${location}&units=metric&APPID=${api.key}`)
+      .then((response) => {
+        this.setWeather(response);
+      })
+      .catch((error) => alert(error));
+    Axios.get(`${api.base}forecast?q=${location}&units=metric&APPID=${api.key}`)
+      .then((response) => {
+        this.setForecast(response);
+      })
+      .catch((error) => alert(error));
+    this.setState({
+      inputAdded: "",
+    });
+  };
 
   locationAdded = (event) => {
     const newLocation = event.target.value;
@@ -48,23 +59,22 @@ class App extends Component {
 
   findLocationWeather = (e) => {
     if (e.keyCode === 13) {
-      Axios.get(
-        `${api.base}weather?q=${this.state.inputAdded}&units=metric&APPID=${api.key}`
-      )
-        .then((response) => {
-          console.log(response);
-          this.setWeather(response);
-        })
-        .catch((error) => alert(error));
-      this.setState({
-        inputAdded: "",
-      });
+      this.getWeatherFromApi(this.state.inputAdded);
     }
   };
 
   setWeather = (result) => {
-    this.setState({ weather: result });
+    this.setState({ weather: result }, () => {
+      console.log(this.state.weather);
+    });
     console.log("Weather Received for", this.state.weather.data.name);
+  };
+
+  setForecast = (result) => {
+    this.setState({ forecast: result }, () => {
+      console.log(this.state.forecast);
+    });
+    console.log("Forecast Received for", this.state.weather.data.name);
   };
 
   timeConverter(timestamp) {
@@ -89,7 +99,7 @@ class App extends Component {
               value={this.state.inputAdded}
             />
           </div>
-          {this.state.weather !== "" ? (
+          {this.state.weather && this.state.forecast !== "" ? (
             <DisplayWeather
               name={this.state.weather.data.name}
               country={this.state.weather.data.sys.country}
@@ -105,6 +115,7 @@ class App extends Component {
               sunset={this.timeConverter(this.state.weather.data.sys.sunset)}
               wind={this.state.weather.data.wind.speed}
               visibility={this.state.weather.data.visibility}
+              forecastdata={this.state.forecast.data.list}
             />
           ) : (
             ""
