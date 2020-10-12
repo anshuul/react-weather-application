@@ -38,15 +38,21 @@ class App extends Component {
       .then((response) => {
         this.setWeather(response);
       })
-      .catch((error) => alert(error));
+      .catch((error) => this.catchError(error));
     Axios.get(`${api.base}forecast?q=${location}&units=metric&APPID=${api.key}`)
       .then((response) => {
         this.setForecast(response);
       })
-      .catch((error) => alert(error));
+      .catch((error) => this.catchError(error));
     this.setState({
       inputAdded: "",
     });
+  };
+
+  catchError = (error) => {
+    if (error.response.status === 404) {
+      alert("The city you entered does not exist. Please enter a valid city.");
+    }
   };
 
   locationAdded = (event) => {
@@ -71,9 +77,7 @@ class App extends Component {
   };
 
   setForecast = (result) => {
-    this.setState({ forecast: result }, () => {
-      console.log(this.state.forecast);
-    });
+    this.setState({ forecast: result });
     console.log("Forecast Received for", this.state.weather.data.name);
   };
 

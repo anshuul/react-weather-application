@@ -6,7 +6,7 @@
 }
 
 .App {
-  background-image: url("./assets/weather.jpg");
+  background-image: url("./assets/weatherimage.jpg");
   background-size: cover;
   background-position: bottom;
   transition: 0.4s ease-out;

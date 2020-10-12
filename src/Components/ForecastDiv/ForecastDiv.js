@@ -39,10 +39,18 @@ const forecastDiv = (props) => {
   time = time.slice(0, time.lastIndexOf(":"));
   return (
     <div className="forecast">
-      <p>{date}</p>
-      <p>{time}</p>
-      <div className="icon">{weatherIcon}</div>
-      <p>{props.temp.toFixed(1)}°C</p>
+      <p className="p1" style={{ padding: "5px" }}>
+        {date}
+      </p>
+      <p className="p2" style={{ paddingBottom: "5px" }}>
+        {time}
+      </p>
+      <div className="icon" style={{ paddingTop: "5px" }}>
+        {weatherIcon}
+      </div>
+      <p className="p3" style={{ padding: "10px" }}>
+        {props.temp.toFixed(1)}°C
+      </p>
     </div>
   );
 };
