@@ -105,7 +105,7 @@ const displayWeather = (props) => {
               </div>
               <div className="details">
                 <div className="data">{props.sunset} </div>
-                <p>Sunrise</p>
+                <p>Sunset</p>
               </div>
               <div className="details">
                 <div className="data">
